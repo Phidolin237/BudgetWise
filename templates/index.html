@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BudgetWise</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 BudgetWise</h1>
+        
+        <!-- Formulaire d'ajout -->
+        <div class="form-container">
+            <h2>Ajouter une opération</h2>
+            <select id="type">
+                <option value="revenu">Revenu</option>
+                <option value="depense">Dépense</option>
+            </select>
+            <input type="number" id="montant" placeholder="Montant">
+            <input type="text" id="description" placeholder="Description">
+            <button onclick="ajouterOperation()">Valider</button>
+        </div>
+        <!-- Section Statistiques -->
+        <div class="stats-container">
+            <h2>Statistiques</h2>
+            <div class="charts">
+                <div class="chart-wrapper">
+                    <h3>Répartition des Dépenses</h3>
+                    <canvas id="depensesChart"></canvas>
+                </div>
+                <div class="chart-wrapper">
+                    <h3>Évolution Mensuelle</h3>
+                    <canvas id="evolutionChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- Affichage des données -->
+        <div class="data-container">
+            <h2>Solde : <span id="solde">0</span> €</h2>
+            
+            <div class="table-container">
+                <h3>Revenus</h3>
+                <table id="revenus">
+                    <thead>
+                        <tr>
+                            <th>Montant</th>
+                            <th>Source</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                
+                <h3>Dépenses</h3>
+                <table id="depenses">
+                    <thead>
+                        <tr>
+                            <th>Montant</th>
+                            <th>Catégorie</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
