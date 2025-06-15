@@ -1,36 +1,46 @@
 ---
-name: Python CI
+name: CI Python  # Nom du workflow qui apparaîtra dans GitHub Actions
 
-on: 
-  push:
+on:  # Déclencheurs pour l'exécution du workflow
+  push:  # S'exécute lors des pushes sur les branches spécifiées
     branches: [main]
-  pull_request:
+  pull_request:  # S'exécute aussi sur les PR ciblant ces branches
     branches: [main]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  test:  # Définit un job nommé "test"
+    runs-on: ubuntu-latest  # Utilise le runner Ubuntu le plus récent
+    
     strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+      matrix:  # Crée une matrice de build pour différentes versions de Python
+        python-version: ["3.9", "3.10", "3.11"]  # Teste avec ces versions de Python
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4  # Récupère le code du dépôt
       
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Configurer Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}  # Configure chaque version de Python
       
-      - name: Install dependencies
+      - name: Installer les dépendances
         run: |
-          python -m pip install --upgrade pip
-          pip install -e .
-          pip install pytest pytest-cov flake8
+          python -m pip install --upgrade pip  # Met à jour pip
+          pip install -e .  # Installe le package en mode éditable
+          pip install pytest pytest-cov flake8  # Installe les outils de test/lint
       
-      - name: Run Flake8 linting
+      - name: Exécuter Flake8 (vérification de style)
         run: |
-          flake8 . --count --show-source --statistics
+          flake8 . --count --show-source --statistics  # Exécute le linter avec sortie détaillée
       
-      - name: Run tests with pytest
-        run
+      - name: Exécuter les tests avec pytest
+        run: |
+          pytest tests/ --cov=app --cov-report=xml  # Lance les tests avec couverture
+      
+      - name: Envoyer la couverture à Codecov
+        uses: codecov/codecov-action@v3
+        if: success()  # Ne s'exécute que si les étapes précédentes réussissent
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}  # Utilise un token secret pour l'authentification
+          files: ./coverage.xml  # Fichier de couverture à envoyer
+          fail_ci_if_error: true  # Fait échouer le CI si l'envoi échoue
