@@ -1,0 +1,8 @@
+extends: default
+rules:
+  truthy:
+    allowed-values: ["true", "false"]
+    check-keys: false  # Désactive le check pour les clés
+  new-lines:
+    type: unix
+    
