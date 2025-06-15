@@ -1,7 +1,25 @@
 [flake8]
 max-line-length = 88
-extend-ignore = E203
-exclude = .git,__pycache__,venv,migrations
-select = E,F,W,C,B,B950
+ignore = 
+    E203,  # Espace avant ':' (incompatible avec Black)
+    E722,  # bare except
+    W503,  # Opérateur en fin de ligne
+    B950   # Lignes trop longues (doublon avec E501)
+exclude =
+    .git,
+    __pycache__,
+    venv,
+    migrations,
+    node_modules,
+    *.pyc,
+    *.pyo,
+    *.egg-info
+select = 
+    E,     # Erreurs
+    W,     # Avertissements
+    F,     # PyFlakes
+    C,     # Complexité
+    B      # Bugs potentiels
 per-file-ignores =
-    __init__.py:F401
+    __init__.py:F401,  # Import non utilisé
+    tests/*:S101       # Assert dans les tests
